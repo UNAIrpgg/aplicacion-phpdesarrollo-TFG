@@ -1,7 +1,6 @@
 # Aplicación CRUD php a implantar en el servidor de desarrollo
 
 >IES Miguel Herrero (Torrelavega) - Curso 2024/2025
->Módulo: IAW - Implantación de Aplicaciones Web  
 >Ciclo: CFGS Administración de Sistemas Informáticos en Red  
 
 Este repositorio es una **guía** para la realización de la **actividad 6.1** de IAW. Contiene lo siguiente: 
