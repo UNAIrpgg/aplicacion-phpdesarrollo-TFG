@@ -3,7 +3,7 @@
 >IES Miguel Herrero (Torrelavega) - Curso 2024/2025
 >Ciclo: CFGS Administración de Sistemas Informáticos en Red  
 
-Este repositorio es una **guía** para la realización de la **actividad 6.1** de IAW. Contiene lo siguiente: 
+Contiene lo siguiente: 
 
 * Directorio /.github/workflows: Contiene ejemplos de flujos de trabajo o "workflows" (Github Actions de GitHub). Orientados a la implementación de "pipeline" o tuberías CI/CD.
 * Directorio /conf: Contiene el archivo de configuración sitio web por defecto en Apache.
