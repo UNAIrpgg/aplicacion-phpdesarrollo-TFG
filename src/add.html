@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta Piloto y Copiloto</title>
+</head>
+<body>
+<div>
+	<header>
+		<h1>Registro de Pilotos y Copilotos WRC</h1>
+	</header>
+	<main>				
+	<ul>
+		<li><a href="index.php">Inicio</a></li>
+		<li><a href="add.html">Alta</a></li>
+	</ul>
+	<h2>Alta de Pilotos y Copilotos</h2>
+
+	<form action="add_action.php" method="post">
+		<div>
+			<label for="nombre_piloto">Nombre Piloto</label>
+			<input type="text" name="nombre_piloto" id="nombre_piloto" placeholder="Ej: Sébastien" required>
+		</div>
+
+		<div>
+			<label for="apellido_piloto">Apellido Piloto</label>
+			<input type="text" name="apellido_piloto" id="apellido_piloto" placeholder="Ej: Ogier" required>
+		</div>
+
+		<div>
+			<label for="nacionalidad_piloto">Nacionalidad Piloto</label>
+			<input type="text" name="nacionalidad_piloto" id="nacionalidad_piloto" placeholder="Ej: Francia" required>
+		</div>
+
+		<div>
+			<label for="nombre_copiloto">Nombre Copiloto</label>
+			<input type="text" name="nombre_copiloto" id="nombre_copiloto" placeholder="Ej: Julien" required>
+		</div>
+
+		<div>
+			<label for="apellido_copiloto">Apellido Copiloto</label>
+			<input type="text" name="apellido_copiloto" id="apellido_copiloto" placeholder="Ej: Ingrassia" required>
+		</div>
+
+		<div>
+			<label for="nacionalidad_copiloto">Nacionalidad Copiloto</label>
+			<input type="text" name="nacionalidad_copiloto" id="nacionalidad_copiloto" placeholder="Ej: Francia" required>
+		</div>
+
+		<div>
+			<input type="submit" name="inserta" value="Agregar">
+			<input type="button" value="Cancelar" onclick="location.href='index.php'">
+		</div>
+	</form>
+	
+	</main>	
+	<footer>
+		Created by the IES Miguel Herrero team &copy; 2025
+  	</footer>
+</div>
+</body>
+</html>
