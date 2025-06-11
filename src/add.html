@@ -3,76 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alta Pacientes</title>
+    <title>Alta de Beneficiarios</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            padding-top: 20px;
-            padding-bottom: 20px;
+        :root {
+            --verde-oscuro: #3F5B35;
+            --fondo-claro: #F3F6F1;
+            --azul-grisaceo: #556B7A;
+            --verde-grisaceo: #557566;
         }
-        .container {
-            max-width: 800px;
+        
+        body {
+            background-color: var(--fondo-claro);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--verde-oscuro);
+        }
+        
+        .navbar-custom {
+            background-color: var(--verde-oscuro);
+        }
+        
+        .btn-primary {
+            background-color: var(--verde-oscuro);
+            border-color: var(--verde-oscuro);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--verde-grisaceo);
+            border-color: var(--verde-grisaceo);
+        }
+        
+        .card-custom {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+            background-color: white;
+        }
+        
+        .header-custom {
+            color: var(--verde-oscuro);
+            font-weight: 600;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--verde-oscuro);
+            font-weight: bold;
+            border-bottom: 3px solid var(--verde-oscuro);
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--azul-grisaceo);
+        }
+        
+        .form-control:focus {
+            border-color: var(--verde-grisaceo);
+            box-shadow: 0 0 0 0.25rem rgba(85, 117, 102, 0.25);
+        }
+        
+        footer {
+            background-color: var(--verde-oscuro);
+            color: white;
         }
     </style>
 </head>
-<body class="bg-light">
-<div class="container">
-    <header class="py-4 text-center">
-        <h1 class="display-4">Registro de Pacientes</h1>
-    </header>
-    <main class="bg-white p-4 rounded shadow-sm mb-4">
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a class="nav-link" href="index.php">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="add.html">Alta</a>
-            </li>
-        </ul>
-        <h2 class="mb-4">Alta de Pacientes</h2>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart-pulse me-2" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053.918 3.995.78 5.323 1.508 7H.43c-2.128-5.697 4.165-8.83 7.394-5.857.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17c3.23-2.974 9.522.159 7.394 5.856h-1.078c.728-1.677.59-3.005.108-3.947C13.486.878 10.4.28 8.717 2.01L8 2.748ZM2.212 10h1.315C4.593 11.183 6.05 12.458 8 13.795c1.949-1.337 3.407-2.612 4.473-3.795h1.315c-1.265 1.566-3.14 3.25-5.788 5-2.648-1.75-4.523-3.434-5.788-5Z"/>
+                    <path d="M10.464 3.314a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.5a.5.5 0 0 0 0 1H4a.5.5 0 0 0 .416-.223l1.473-2.209 1.647 4.118a.5.5 0 0 0 .945-.049l1.598-5.593 1.457 3.642A.5.5 0 0 0 12 9h3.5a.5.5 0 0 0 0-1h-3.162l-1.874-4.686Z"/>
+                </svg>
+                Sistema de Beneficiarios
+            </a>
+        </div>
+    </nav>
 
-        <form action="add_action.php" method="post">
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ej: Paco" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido</label>
-                <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Ej: Porras" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="edad" class="form-label">Edad</label>
-                <input type="number" class="form-control" name="edad" id="edad" placeholder="Ej: 18" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="fecha_ingreso" class="form-label">Fecha Ingreso</label>
-                <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="estado_recuperacion" class="form-label">Estado Recuperación</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" name="estado_recuperacion" id="estado_recuperacion" placeholder="Ej: Recuperado" required>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card card-custom mb-4">
+                    <div class="card-body">
+                        <h2 class="header-custom mb-4 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-person-plus me-2" viewBox="0 0 16 16">
+                                <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                            </svg>
+                            Alta de Beneficiario
+                        </h2>
+                        
+                        <ul class="nav nav-tabs mb-4">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.php">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door me-1" viewBox="0 0 16 16">
+                                        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                                    </svg>
+                                    Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus me-1" viewBox="0 0 16 16">
+                                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                    </svg>
+                                    Alta
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="form-container">
+                            <form action="add_action.php" method="post">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Juan" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="apellido" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ej: Pérez" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="edad" class="form-label">Edad</label>
+                                    <input type="number" class="form-control" id="edad" name="edad" placeholder="Ej: 35" min="1" max="120" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="fecha_ingreso" class="form-label">Fecha Ingreso</label>
+                                    <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="estado_recuperacion" class="form-label">Estado Recuperación</label>
+                                    <select class="form-select" id="estado_recuperacion" name="estado_recuperacion" required>
+                                        <option value="" selected disabled>Seleccione un estado</option>
+                                        <option value="En seguimiento">En seguimiento</option>
+                                        <option value="En tratamiento">En tratamiento</option>
+                                        <option value="Recuperado">Recuperado</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="d-flex justify-content-end gap-3 mt-4">
+                                    <a href="index.php" class="btn btn-outline-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                        Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary" name="inserta">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle me-1" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                        </svg>
+                                        Agregar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-outline-secondary me-md-2" onclick="location.href='index.php'">Cancelar</button>
-                <button type="submit" class="btn btn-primary" name="inserta">Agregar</button>
-            </div>
-        </form>
-    </main>
-    
-    <footer class="text-center text-muted mt-4">
-        Created by the IES Miguel Herrero team &copy; 2025
+    <footer class="py-3 mt-4">
+        <div class="container text-center text-white" style="background-color: var(--verde-oscuro); border-radius: 8px; padding: 1rem;">
+            <small>Created by the IES Miguel Herrero team &copy; 2025</small>
+        </div>
     </footer>
-</div>
 
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

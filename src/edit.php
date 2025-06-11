@@ -1,105 +1,225 @@
 <?php
-//Incluye fichero con parámetros de conexión a la base de datos
 include_once("config.php");
+
+// Verificar conexión a la base de datos
+if ($mysqli->connect_error) {
+    die("Error de conexión: " . $mysqli->connect_error);
+}
+
+// Obtener ID del beneficiario
+$beneficiary_id = isset($_GET['beneficiario_id']) ? intval($_GET['beneficiario_id']) : 0;
+
+if ($beneficiary_id <= 0) {
+    die("ID de beneficiario no válido");
+}
+
+// Consultar los datos del beneficiario
+$query = "SELECT * FROM beneficiarios WHERE beneficiario_id = ?";
+$stmt = $mysqli->prepare($query);
+$stmt->bind_param("i", $beneficiary_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    die("Beneficiario no encontrado");
+}
+
+$beneficiario = $result->fetch_assoc();
+
+// Cerrar conexión
+$stmt->close();
+$mysqli->close();
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <title>Modificación de Beneficiarios</title>
-    <!-- Bootstrap CSS (con integridad SRI) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Beneficiario</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            padding-top: 20px;
+        :root {
+            --verde-oscuro: #3F5B35;
+            --fondo-claro: #F3F6F1;
+            --azul-grisaceo: #556B7A;
+            --verde-grisaceo: #557566;
         }
+        
+        body {
+            background-color: var(--fondo-claro);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--verde-oscuro);
+        }
+        
+        .navbar-custom {
+            background-color: var(--verde-oscuro);
+        }
+        
+        .btn-primary {
+            background-color: var(--verde-oscuro);
+            border-color: var(--verde-oscuro);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--verde-grisaceo);
+            border-color: var(--verde-grisaceo);
+        }
+        
+        .card-custom {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+            background-color: white;
+        }
+        
+        .header-custom {
+            color: var(--verde-oscuro);
+            font-weight: 600;
+        }
+        
         .form-container {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
             padding: 25px;
-            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--verde-oscuro);
+            font-weight: bold;
+            border-bottom: 3px solid var(--verde-oscuro);
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--azul-grisaceo);
+        }
+        
+        footer {
+            background-color: var(--verde-oscuro);
+            color: white;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <header class="mb-4 text-center">
-        <h1 class="display-4">Plantilla Beneficiarios</h1>
-    </header>
-    
-    <main>
-        <ul class="nav nav-tabs mb-4">
-            <li class="nav-item">
-                <a class="nav-link" href="index.php">Inicio</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="add.html">Alta</a>
-            </li>
-        </ul>
-        
-        <h2 class="mb-4">Modificación de Beneficiarios</h2>
-        
-        <div class="form-container">
-            <?php
-            $beneficiary = $_GET['beneficiario_id'];
-            $beneficiary = $mysqli->real_escape_string($beneficiary);
-            $resultado = $mysqli->query("SELECT nombre, apellido, edad, fecha_ingreso, estado_recuperacion FROM beneficiarios WHERE beneficiario_id = $beneficiary");
-            
-            $fila = $resultado->fetch_array();
-            $name = $fila['nombre'];
-            $surname = $fila['apellido'];
-            $age = $fila['edad'];
-            $login_date = $fila['fecha_ingreso'];
-            $recovery_status = $fila['estado_recuperacion'];
-            $mysqli->close();
-            ?>
-            
-            <form action="edit_action.php" method="post">
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" value="<?php echo htmlspecialchars($name); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" name="apellido" id="apellido" value="<?php echo htmlspecialchars($surname); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="edad" class="form-label">Edad</label>
-                    <input type="number" class="form-control" name="edad" id="edad" value="<?php echo htmlspecialchars($age); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="fecha_ingreso" class="form-label">Fecha Ingreso</label>
-                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" value="<?php echo htmlspecialchars($login_date); ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="estado_recuperacion" class="form-label">Estado Recuperación</label>
-                    <input type="text" class="form-control" name="estado_recuperacion" id="estado_recuperacion" value="<?php echo htmlspecialchars($recovery_status); ?>" required>
-                </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <input type="hidden" name="beneficiario_id" value="<?php echo $beneficiary; ?>">
-                    <button type="submit" class="btn btn-primary" name="modifica">Guardar</button>
-                    <a href="index.php" class="btn btn-secondary">Cancelar</a>
-                </div>
-            </form>
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="index.php">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-heart-pulse me-2" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053.918 3.995.78 5.323 1.508 7H.43c-2.128-5.697 4.165-8.83 7.394-5.857.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17c3.23-2.974 9.522.159 7.394 5.856h-1.078c.728-1.677.59-3.005.108-3.947C13.486.878 10.4.28 8.717 2.01L8 2.748ZM2.212 10h1.315C4.593 11.183 6.05 12.458 8 13.795c1.949-1.337 3.407-2.612 4.473-3.795h1.315c-1.265 1.566-3.14 3.25-5.788 5-2.648-1.75-4.523-3.434-5.788-5Z"/>
+                    <path d="M10.464 3.314a.5.5 0 0 0-.945.049L7.921 8.956 6.464 5.314a.5.5 0 0 0-.88-.091L3.732 8H.5a.5.5 0 0 0 0 1H4a.5.5 0 0 0 .416-.223l1.473-2.209 1.647 4.118a.5.5 0 0 0 .945-.049l1.598-5.593 1.457 3.642A.5.5 0 0 0 12 9h3.5a.5.5 0 0 0 0-1h-3.162l-1.874-4.686Z"/>
+                </svg>
+                Sistema de Beneficiarios
+            </a>
         </div>
-    </main>
-    
-    <footer class="text-center text-muted mt-4">
-        Created by the IES Miguel Herrero team &copy; 2025
-    </footer>
-</div>
+    </nav>
 
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card card-custom mb-4">
+                    <div class="card-body">
+                        <h2 class="header-custom mb-4 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-pencil-square me-2" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                            Editar Beneficiario
+                        </h2>
+                        
+                        <ul class="nav nav-tabs mb-4">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.php">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door me-1" viewBox="0 0 16 16">
+                                        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                                    </svg>
+                                    Inicio
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="add.html">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus me-1" viewBox="0 0 16 16">
+                                        <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                    </svg>
+                                    Alta
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil me-1" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+                                    </svg>
+                                    Edición
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="form-container">
+                            <form action="edit_action.php" method="post">
+                                <div class="mb-3">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo htmlspecialchars($beneficiario['nombre']); ?>" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="apellido" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="apellido" name="apellido" value="<?php echo htmlspecialchars($beneficiario['apellido']); ?>" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="edad" class="form-label">Edad</label>
+                                    <input type="number" class="form-control" id="edad" name="edad" value="<?php echo htmlspecialchars($beneficiario['edad']); ?>" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="fecha_ingreso" class="form-label">Fecha Ingreso</label>
+                                    <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="<?php echo htmlspecialchars($beneficiario['fecha_ingreso']); ?>" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="estado_recuperacion" class="form-label">Estado Recuperación</label>
+                                    <select class="form-select" id="estado_recuperacion" name="estado_recuperacion" required>
+                                        <option value="En seguimiento" <?php echo ($beneficiario['estado_recuperacion'] == 'En seguimiento') ? 'selected' : ''; ?>>En seguimiento</option>
+                                        <option value="En tratamiento" <?php echo ($beneficiario['estado_recuperacion'] == 'Estable') ? 'selected' : ''; ?>>En tratamiento</option>
+                                        <option value="Recuperado" <?php echo ($beneficiario['estado_recuperacion'] == 'Recuperado') ? 'selected' : ''; ?>>Recuperado</option>
+                                    </select>
+                                </div>
+                                
+                                <input type="hidden" name="beneficiario_id" value="<?php echo $beneficiary_id; ?>">
+                                
+                                <div class="d-flex justify-content-end gap-3 mt-4">
+                                    <a href="index.php" class="btn btn-outline-secondary">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle me-1" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                        Cancelar
+                                    </a>
+                                    <button type="submit" class="btn btn-primary" name="modifica">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle me-1" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                        </svg>
+                                        Guardar Cambios
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-3 mt-4">
+        <div class="container text-center text-white" style="background-color: var(--verde-oscuro); border-radius: 8px; padding: 1rem;">
+            <small>Created by the IES Miguel Herrero team &copy; 2025</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
