@@ -1,24 +1,22 @@
-CREATE TABLE pilotos_copilotos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_piloto VARCHAR(50) NOT NULL,
-    apellido_piloto VARCHAR(50) NOT NULL,
-    nacionalidad_piloto VARCHAR(50) NOT NULL,
-    nombre_copiloto VARCHAR(50) NOT NULL,
-    apellido_copiloto VARCHAR(50) NOT NULL,
-    nacionalidad_copiloto VARCHAR(50) NOT NULL
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE beneficiarios (
+    beneficiario_id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellido VARCHAR(50) NOT NULL,
+    edad INT NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    estado_recuperacion VARCHAR(20) NOT NULL
+);
 
-INSERT INTO pilotos_copilotos (nombre_piloto, apellido_piloto, nacionalidad_piloto, nombre_copiloto, apellido_copiloto, nacionalidad_copiloto) VALUES
-('Sébastien', 'Loeb', 'Francia', 'Daniel', 'Elena', 'Mónaco'),
-('Carlos', 'Sainz', 'España', 'Lucas', 'Cruz', 'España'),
-('Thierry', 'Neuville', 'Bélgica', 'Martijn', 'Wydaeghe', 'Bélgica'),
-('Ott', 'Tänak', 'Estonia', 'Martin', 'Järveoja', 'Estonia'),
-('Kalle', 'Rovanperä', 'Finlandia', 'Jonne', 'Halttunen', 'Finlandia'),
-('Elfyn', 'Evans', 'Reino Unido', 'Scott', 'Martin', 'Reino Unido'),
-('Dani', 'Sordo', 'España', 'Cándido', 'Carrera', 'España'),
-('Esapekka', 'Lappi', 'Finlandia', 'Janne', 'Ferm', 'Finlandia'),
-('Gus', 'Greensmith', 'Reino Unido', 'Jonas', 'Andersson', 'Suecia'),
-('Adrien', 'Fourmaux', 'Francia', 'Alexandre', 'Coria', 'Francia');
-
+INSERT INTO beneficiarios (nombre, apellido, edad, fecha_ingreso, estado_recuperacion) VALUES
+('Juan', 'Martínez', 34, '2024-01-15', 'En tratamiento'),
+('María', 'López', 28, '2023-11-20', 'Recuperado'),
+('Carlos', 'González', 40, '2024-02-10', 'En terapia'),
+('Laura', 'Fernández', 25, '2023-12-05', 'En tratamiento'),
+('Pedro', 'Ramírez', 38, '2023-10-30', 'En seguimiento'),
+('Sofía', 'Díaz', 29, '2024-01-05', 'En tratamiento'),
+('Miguel', 'Torres', 33, '2023-09-15', 'Recuperado'),
+('Ana', 'Sánchez', 27, '2024-02-20', 'En terapia'),
+('Luis', 'Hernández', 35, '2023-08-25', 'En seguimiento'),
+('Elena', 'Castro', 31, '2023-11-10', 'Recuperado');
 
 

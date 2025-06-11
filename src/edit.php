@@ -6,89 +6,100 @@ include_once("config.php");
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">	
-	<title>WRC 2025 - Modificación de Piloto y Copiloto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <title>Modificación de Beneficiarios</title>
+    <!-- Bootstrap CSS (con integridad SRI) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .form-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-<div>
-	<header>
-		<h1>Plantilla WRC 2025</h1>
-	</header>
-	
-	<main>				
-	<ul>
-		<li><a href="index.php" >Inicio</a></li>
-		<li><a href="add.html" >Alta</a></li>
-	</ul>
-	<h2>Modificación de Piloto y Copiloto</h2>
+<div class="container">
+    <header class="mb-4 text-center">
+        <h1 class="display-4">Plantilla Beneficiarios</h1>
+    </header>
+    
+    <main>
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" href="index.php">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="add.html">Alta</a>
+            </li>
+        </ul>
+        
+        <h2 class="mb-4">Modificación de Beneficiarios</h2>
+        
+        <div class="form-container">
+            <?php
+            $beneficiary = $_GET['beneficiario_id'];
+            $beneficiary = $mysqli->real_escape_string($beneficiary);
+            $resultado = $mysqli->query("SELECT nombre, apellido, edad, fecha_ingreso, estado_recuperacion FROM beneficiarios WHERE beneficiario_id = $beneficiary");
+            
+            $fila = $resultado->fetch_array();
+            $name = $fila['nombre'];
+            $surname = $fila['apellido'];
+            $age = $fila['edad'];
+            $login_date = $fila['fecha_ingreso'];
+            $recovery_status = $fila['estado_recuperacion'];
+            $mysqli->close();
+            ?>
+            
+            <form action="edit_action.php" method="post">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="nombre" id="nombre" value="<?php echo htmlspecialchars($name); ?>" required>
+                </div>
 
-<?php
-// Obtiene el id del piloto a modificar desde la URL utilizando el método GET
-$idpiloto = $_GET['id'];
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" name="apellido" id="apellido" value="<?php echo htmlspecialchars($surname); ?>" required>
+                </div>
 
-// Protege caracteres especiales en la cadena para evitar inyección SQL
-$idpiloto = $mysqli->real_escape_string($idpiloto);
+                <div class="mb-3">
+                    <label for="edad" class="form-label">Edad</label>
+                    <input type="number" class="form-control" name="edad" id="edad" value="<?php echo htmlspecialchars($age); ?>" required>
+                </div>
 
-// Se selecciona el registro del piloto y copiloto a modificar
-$resultado = $mysqli->query("SELECT nombre_piloto, apellido_piloto, nacionalidad_piloto, nombre_copiloto, apellido_copiloto, nacionalidad_copiloto FROM pilotos_copilotos WHERE id = $idpiloto");
+                <div class="mb-3">
+                    <label for="fecha_ingreso" class="form-label">Fecha Ingreso</label>
+                    <input type="date" class="form-control" name="fecha_ingreso" id="fecha_ingreso" value="<?php echo htmlspecialchars($login_date); ?>" required>
+                </div>
 
-// Se extrae el registro y lo guarda en el array $fila
-$fila = $resultado->fetch_array();
-$nombre_piloto = $fila['nombre_piloto'];
-$apellido_piloto = $fila['apellido_piloto'];
-$nacionalidad_piloto = $fila['nacionalidad_piloto'];
-$nombre_copiloto = $fila['nombre_copiloto'];
-$apellido_copiloto = $fila['apellido_copiloto'];
-$nacionalidad_copiloto = $fila['nacionalidad_copiloto'];
+                <div class="mb-3">
+                    <label for="estado_recuperacion" class="form-label">Estado Recuperación</label>
+                    <input type="text" class="form-control" name="estado_recuperacion" id="estado_recuperacion" value="<?php echo htmlspecialchars($recovery_status); ?>" required>
+                </div>
 
-// Se cierra la conexión con la base de datos
-$mysqli->close();
-?>
-
-<!-- FORMULARIO DE EDICIÓN. Al hacer clic en "Guardar", se envían los datos a edit_action.php -->
-	<form action="edit_action.php" method="post">
-		<div>
-			<label for="nombre_piloto">Nombre Piloto</label>
-			<input type="text" name="nombre_piloto" id="nombre_piloto" value="<?php echo $nombre_piloto;?>" required>
-		</div>
-
-		<div>
-			<label for="apellido_piloto">Apellido Piloto</label>
-			<input type="text" name="apellido_piloto" id="apellido_piloto" value="<?php echo $apellido_piloto;?>" required>
-		</div>
-
-		<div>
-			<label for="nacionalidad_piloto">Nacionalidad Piloto</label>
-			<input type="text" name="nacionalidad_piloto" id="nacionalidad_piloto" value="<?php echo $nacionalidad_piloto;?>" required>
-		</div>
-
-		<div>
-			<label for="nombre_copiloto">Nombre Copiloto</label>
-			<input type="text" name="nombre_copiloto" id="nombre_copiloto" value="<?php echo $nombre_copiloto;?>" required>
-		</div>
-
-		<div>
-			<label for="apellido_copiloto">Apellido Copiloto</label>
-			<input type="text" name="apellido_copiloto" id="apellido_copiloto" value="<?php echo $apellido_copiloto;?>" required>
-		</div>
-
-		<div>
-			<label for="nacionalidad_copiloto">Nacionalidad Copiloto</label>
-			<input type="text" name="nacionalidad_copiloto" id="nacionalidad_copiloto" value="<?php echo $nacionalidad_copiloto;?>" required>
-		</div>
-
-		<div>
-			<input type="hidden" name="id" value=<?php echo $idpiloto;?>>
-			<input type="submit" name="modifica" value="Guardar">
-			<input type="button" value="Cancelar" onclick="location.href='index.php'">
-		</div>
-	</form>
-	</main>	
-	<footer>
-		Created by the IES Miguel Herrero team &copy; 2025
-  	</footer>
+                <div class="d-flex justify-content-end gap-2">
+                    <input type="hidden" name="beneficiario_id" value="<?php echo $beneficiary; ?>">
+                    <button type="submit" class="btn btn-primary" name="modifica">Guardar</button>
+                    <a href="index.php" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <footer class="text-center text-muted mt-4">
+        Created by the IES Miguel Herrero team &copy; 2025
+    </footer>
 </div>
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>
 
