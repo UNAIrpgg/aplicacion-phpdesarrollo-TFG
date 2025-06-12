@@ -120,7 +120,7 @@ include_once("config.php");
                             <table class="table table-hover table-custom">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
+                                        <th>Algo a cambiado</th>
                                         <th>Apellido</th>
                                         <th>Edad</th>
                                         <th>Fecha Ingreso</th>
